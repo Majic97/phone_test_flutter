@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:phone_test/source/colors.dart';
 
 ThemeData getCustomThemeData() {
   return ThemeData(
       primarySwatch: const MaterialColor(0xFF010035, appColorMap),
-      backgroundColor: const Color(0xFFF8F8F8),
+      backgroundColor: backgroundColor,
       fontFamily: "MarkPro",
       colorScheme: colorScheme(),
-      appBarTheme: const AppBarTheme(
-          actionsIconTheme: IconThemeData(color: Color(0xFFFF6E4E)),
-          // backgroundColor: Color(0x00FFFFFF),
-          iconTheme: IconThemeData(color: Color(0xFFFFFFFF))),
-      bottomAppBarColor: const Color(0xFF010035));
+      appBarTheme: AppBarTheme(
+          actionsIconTheme: const IconThemeData(color: customOrange),
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: backgroundColor.withOpacity(0),
+          titleTextStyle: const TextStyle(
+              color: darklBue, fontSize: 15, fontWeight: FontWeight.w500),
+          shadowColor: Colors.white.withOpacity(0)),
+      bottomAppBarColor: darklBue);
 }
 
 const Map<int, Color> appColorMap = {
@@ -29,14 +33,14 @@ const Map<int, Color> appColorMap = {
 ColorScheme colorScheme() {
   return ColorScheme(
       brightness: Brightness.light,
-      primary: const Color(0xFF010035),
+      primary: darklBue,
       onPrimary: Colors.white,
-      secondary: const Color(0xFFFF6E4E),
+      secondary: customOrange,
       onSecondary: Colors.white,
       error: Colors.red[600]!,
       onError: Colors.white,
-      background: const Color(0xFFF8F8F8),
+      background: backgroundColor,
       onBackground: Colors.white,
       surface: Colors.white,
-      onSurface: const Color(0xFF010035));
+      onSurface: darklBue);
 }

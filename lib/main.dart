@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phone_test/pages/main_page/main_page.dart';
 import 'source/AppTheme/AppTheme.dart';
 
 void main() {
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: getCustomThemeData(),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MainPage(),
     );
   }
 }
