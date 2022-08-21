@@ -43,7 +43,28 @@ class _MainPageState extends State<MainPage> {
                   ],
                 ),
               ),
-              selectCategoryList()
+              selectCategoryList(),
+              Container(
+                height: 50,
+                padding: const EdgeInsets.only(
+                    left: 32, right: 26, top: 0, bottom: 0),
+                child: Row(
+                  children: <Widget>[
+                    const Expanded(child: SearchWidget()),
+                    MaterialButton(
+                        height: 30,
+                        minWidth: 30,
+                        color: customOrange,
+                        onPressed: () {},
+                        child: const Icon(
+                          Icons.qr_code,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                        shape: const CircleBorder())
+                  ],
+                ),
+              )
             ],
           )),
     );
@@ -51,22 +72,21 @@ class _MainPageState extends State<MainPage> {
 
   SizedBox selectCategoryList() {
     return SizedBox(
-      height: 120.0,
+      height: 110.0,
       child: BlocBuilder<MainPageCubit, MainPageState>(
           buildWhen: (previous, current) {
-        if (current is MainPageInitState || current is MainPageCategoryState)
-          return true;
-        return false;
+        return (current is MainPageInitState ||
+                current is MainPageCategoryState)
+            ? true
+            : false;
       }, builder: (context, state) {
         return ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: categoryIcons.length,
           itemBuilder: (context, index) {
-            late int _selectedCategory = 0;
-            if (state is MainPageCategoryState)
-              _selectedCategory = (state).category;
-            return getCategoryWidget(
-                index, (_selectedCategory == index), context);
+            late int _category = 0;
+            if (state is MainPageCategoryState) _category = (state).category;
+            return getCategoryWidget(index, (_category == index), context);
           },
         );
       }),
@@ -153,6 +173,40 @@ class _MainPageState extends State<MainPage> {
           )
         ]),
       ),
+    );
+  }
+}
+
+class SearchWidget extends StatelessWidget {
+  const SearchWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 30,
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(blurRadius: 50, color: Colors.black.withOpacity(0.08))
+      ]),
+      child: const TextField(
+          textAlignVertical: TextAlignVertical.bottom,
+          textAlign: TextAlign.left,
+          decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.search,
+                color: customOrange,
+                size: 20.0,
+              ),
+              hintText: "Search",
+              filled: true,
+              fillColor: Colors.white,
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(50.0))),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(50.0))))),
     );
   }
 }
