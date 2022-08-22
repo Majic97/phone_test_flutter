@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phone_test/pages/main_page/main_page_cubit.dart';
 import 'package:phone_test/pages/main_page/main_page_states.dart';
@@ -25,43 +28,43 @@ class _MainPageState extends State<MainPage> {
               child: mainPageAppBar()),
           body: Column(
             children: [
+              const SelectCategoryTitleWidget(),
+              categoriesListWidget(),
+              const SearchWidgetAndQRButtonWidget(),
               Padding(
-                padding: const EdgeInsets.only(left: 17.0, right: 33),
-                child: Row(
-                  children: const [
-                    Expanded(
-                      child: Text(
-                        "Select category",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                    Text(
-                      "view all",
-                      style: TextStyle(color: customOrange),
-                    )
-                  ],
-                ),
-              ),
-              selectCategoryList(),
-              Container(
-                height: 50,
-                padding: const EdgeInsets.only(
-                    left: 32, right: 26, top: 0, bottom: 0),
-                child: Row(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: Column(
                   children: <Widget>[
-                    const Expanded(child: SearchWidget()),
-                    MaterialButton(
-                        height: 30,
-                        minWidth: 30,
-                        color: customOrange,
-                        onPressed: () {},
-                        child: const Icon(
-                          Icons.qr_code,
-                          color: Colors.white,
-                          size: 16,
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                              child: const Text(
+                                "Hot sales",
+                                style: TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.w700),
+                              ),
+                              alignment: Alignment.centerLeft),
                         ),
-                        shape: const CircleBorder())
+                        const Text(
+                          "see more",
+                          style: TextStyle(color: customOrange, fontSize: 15),
+                        )
+                      ],
+                    ),
+                    CarouselSlider.builder(
+                        itemCount: 5,
+                        itemBuilder: (BuildContext context, int itemIndex,
+                                int pageViewIndex) =>
+                            getHotSalesPictureWidget(context),
+                        options: CarouselOptions(
+                          autoPlay: false,
+                          enlargeCenterPage: true,
+                          viewportFraction: 1,
+                          aspectRatio: 2.0,
+                          initialPage: 2,
+                        ))
+                    // getHotSalesPictureWidget(context)
                   ],
                 ),
               )
@@ -70,7 +73,86 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  SizedBox selectCategoryList() {
+  Container getHotSalesPictureWidget(
+    BuildContext context,
+  ) {
+    return Container(
+        height: 180.0,
+        width: MediaQuery.of(context).size.width,
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            image: DecorationImage(
+                image: NetworkImage(
+                    "https://img.ibxk.com.br/2020/09/23/23104013057475.jpg?w=1120&h=420&mode=crop&scale=both"),
+                fit: BoxFit.cover)),
+        child: Container(
+          padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 20),
+          alignment: Alignment.centerLeft,
+          child: Column(
+            children: <Widget>[
+              Container(
+                  alignment: Alignment.centerLeft,
+                  child: Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: const <Widget>[
+                      Icon(
+                        Icons.circle,
+                        size: 30,
+                        color: customOrange,
+                      ),
+                      Text(
+                        "New",
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700),
+                      )
+                    ],
+                  )),
+              Expanded(child: Container()),
+              Column(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      "Iphine 12",
+                      style: TextStyle(fontSize: 25, color: Colors.white),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      "Mega super rapido",
+                      style: TextStyle(fontSize: 10, color: Colors.white),
+                    ),
+                  )
+                ],
+              ),
+              Expanded(child: Container()),
+              Container(
+                height: 20,
+                alignment: Alignment.centerLeft,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      fixedSize: MaterialStateProperty.all(const Size(85, 20))),
+                  child: const Text(
+                    "Buy now!",
+                    style: TextStyle(
+                        fontSize: 11,
+                        color: darklBue,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  SizedBox categoriesListWidget() {
     return SizedBox(
       height: 110.0,
       child: BlocBuilder<MainPageCubit, MainPageState>(
@@ -86,7 +168,8 @@ class _MainPageState extends State<MainPage> {
           itemBuilder: (context, index) {
             late int _category = 0;
             if (state is MainPageCategoryState) _category = (state).category;
-            return getCategoryWidget(index, (_category == index), context);
+            return getCategoryCircleWidget(
+                index, (_category == index), context);
           },
         );
       }),
@@ -102,7 +185,8 @@ class _MainPageState extends State<MainPage> {
     Pair(Icons.headphones, "Headphones")
   ];
 
-  Padding getCategoryWidget(int index, bool isSelected, BuildContext context) {
+  Padding getCategoryCircleWidget(
+      int index, bool isSelected, BuildContext context) {
     final Color buttonColor;
     final Color iconColor;
 
@@ -172,6 +256,63 @@ class _MainPageState extends State<MainPage> {
             color: darklBue,
           )
         ]),
+      ),
+    );
+  }
+}
+
+class SearchWidgetAndQRButtonWidget extends StatelessWidget {
+  const SearchWidgetAndQRButtonWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      padding: const EdgeInsets.only(left: 32, right: 26, top: 0, bottom: 0),
+      child: Row(
+        children: <Widget>[
+          const Expanded(child: SearchWidget()),
+          MaterialButton(
+              height: 30,
+              minWidth: 30,
+              color: customOrange,
+              onPressed: () {},
+              child: const Icon(
+                Icons.qr_code,
+                color: Colors.white,
+                size: 16,
+              ),
+              shape: const CircleBorder())
+        ],
+      ),
+    );
+  }
+}
+
+class SelectCategoryTitleWidget extends StatelessWidget {
+  const SelectCategoryTitleWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 17.0, right: 33),
+      child: Row(
+        children: const [
+          Expanded(
+            child: Text(
+              "Select category",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
+            ),
+          ),
+          Text(
+            "view all",
+            style: TextStyle(color: customOrange),
+          )
+        ],
       ),
     );
   }
