@@ -33,8 +33,10 @@ class HotSale {
   final String subtitle;
   final Image image;
   final bool isBuy;
+  final String title;
 
-  HotSale(this.id, this.isNew, this.subtitle, this.image, this.isBuy);
+  HotSale(
+      this.id, this.title, this.isNew, this.subtitle, this.image, this.isBuy);
 }
 
 class BestSeller {

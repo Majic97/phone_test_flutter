@@ -19,19 +19,24 @@ class MainPageCubit extends Cubit<MainPageState> {
   void getDataFromServer() async {
     emit(MainPageInProgressState());
 
-    http.Response response = await http.get(mainPageUri);
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
-      emit(MainPageWithDataState(
-          getHotSalesFromJson(data), getBestSellersFromJson(data)));
-    } else {
+    try {
+      http.Response response = await http.get(mainPageUri);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+        emit(MainPageWithDataState(
+            getHotSalesFromJson(data), getBestSellersFromJson(data)));
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
       emit(MainPageNoConnectionState());
+      return;
     }
   }
 
   void setNewCategory(int i) {
     emit(MainPageCategoryState(i));
+    getDataFromServer();
   }
 }
 
@@ -41,8 +46,17 @@ List<HotSale> getHotSalesFromJson(Map<String, dynamic> mainPageUriBody) {
 
   List<dynamic> hotSalesList = mainPageUriBody["home_store"];
   for (Map<String, dynamic> item in hotSalesList) {
-    hotSales.add(HotSale(int.parse(item['id']), item['is_new'],
-        item['subtitle'], Image.network(item['picture']), item['is_buy']));
+    try {
+      hotSales.add(HotSale(
+          int.parse(item['id'].toString()),
+          item['title'],
+          (item['is_new'] == null ? false : item['is_new']),
+          item['subtitle'],
+          Image.network(item['picture']),
+          item['is_buy']));
+    } catch (e) {
+      continue;
+    }
   }
 
   return hotSales;
@@ -56,11 +70,11 @@ List<BestSeller> getBestSellersFromJson(Map<String, dynamic> mainPageUriBody) {
 
   for (Map<String, dynamic> item in bestSellersList) {
     bestSellers.add(BestSeller(
-        int.parse(item['id']),
+        int.parse(item['id'].toString()),
         item['is_favorites'],
         item['title'],
-        double.parse(item['price_without_discount']),
-        double.parse(item['discount_price']),
+        double.parse(item['price_without_discount'].toString()),
+        double.parse(item['discount_price'].toString()),
         Image.network(item['picture'])));
   }
 
