@@ -10,7 +10,7 @@ ThemeData getCustomThemeData() {
       appBarTheme: AppBarTheme(
           actionsIconTheme: const IconThemeData(color: customOrange),
           iconTheme: const IconThemeData(color: Colors.white),
-          backgroundColor: backgroundColor.withOpacity(0),
+          backgroundColor: backgroundColor,
           titleTextStyle: const TextStyle(
               color: darklBue, fontSize: 15, fontWeight: FontWeight.w500),
           shadowColor: Colors.white.withOpacity(0)),

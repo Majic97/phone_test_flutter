@@ -27,6 +27,12 @@ class MainPageCategoryState extends MainPageState {
   MainPageCategoryState(this.category);
 }
 
+class MainPageEmitFilterState extends MainPageState {
+  final bool emitFilter;
+
+  MainPageEmitFilterState(this.emitFilter);
+}
+
 class HotSale {
   final int id;
   final bool isNew;

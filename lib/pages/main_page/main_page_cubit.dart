@@ -9,12 +9,26 @@ import 'package:phone_test/pages/main_page/main_page_states.dart'
 import '../../source/exceptions/Custom_Exceptions.dart';
 
 class MainPageCubit extends Cubit<MainPageState> {
-  MainPageCubit() : super(MainPageInitState());
+  MainPageCubit() : super(MainPageInitState()) {
+    getDataFromServer();
+  }
 
   final Uri mainPageUri =
       Uri.parse("https://run.mocky.io/v3/654bd15e-b121-49ba-a588-960956b15175");
   final Uri phoneDetail =
       Uri.parse("https://run.mocky.io/v3/6c14c560-15c6-4248-b9d2-b4508df7d4f5");
+
+  bool isFilterEmited = false;
+
+  void emitFilter() {
+    if (isFilterEmited) {
+      emit(MainPageEmitFilterState(false));
+      isFilterEmited = false;
+    } else {
+      emit(MainPageEmitFilterState(true));
+      isFilterEmited = true;
+    }
+  }
 
   void getDataFromServer() async {
     emit(MainPageInProgressState());
@@ -46,7 +60,10 @@ List<HotSale> getHotSalesFromJson(Map<String, dynamic> mainPageUriBody) {
 
   List<dynamic> hotSalesList = mainPageUriBody["home_store"];
   for (Map<String, dynamic> item in hotSalesList) {
+    late Image _image;
     try {
+      _image = Image.network(item['picture']);
+
       hotSales.add(HotSale(
           int.parse(item['id'].toString()),
           item['title'],
@@ -69,13 +86,20 @@ List<BestSeller> getBestSellersFromJson(Map<String, dynamic> mainPageUriBody) {
   List<dynamic> bestSellersList = mainPageUriBody["best_seller"];
 
   for (Map<String, dynamic> item in bestSellersList) {
-    bestSellers.add(BestSeller(
-        int.parse(item['id'].toString()),
-        item['is_favorites'],
-        item['title'],
-        double.parse(item['price_without_discount'].toString()),
-        double.parse(item['discount_price'].toString()),
-        Image.network(item['picture'])));
+    late Image _image;
+    try {
+      _image = Image.network(item['picture']);
+
+      bestSellers.add(BestSeller(
+          int.parse(item['id'].toString()),
+          item['is_favorites'],
+          item['title'],
+          double.parse(item['price_without_discount'].toString()),
+          double.parse(item['discount_price'].toString()),
+          _image));
+    } catch (e) {
+      continue;
+    }
   }
 
   return bestSellers;
