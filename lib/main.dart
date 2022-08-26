@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phone_test/pages/cart_page/cart_page.dart';
 import 'package:phone_test/pages/main_page/main_page.dart';
 import 'package:phone_test/pages/phone_details_page/phone_datails_page.dart';
 import 'source/AppTheme/AppTheme.dart';
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: getCustomThemeData(),
         // home: const MainPage(),
-        home: const PhoneDetailsPage());
+        // home: const PhoneDetailsPage()
+        home: const CartPage());
   }
 }

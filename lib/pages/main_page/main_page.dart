@@ -474,8 +474,8 @@ class appBarWidget extends StatelessWidget {
       title: Stack(alignment: Alignment.center, children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Padding(
+          children: const [
+            Padding(
               padding: EdgeInsets.only(right: 4.0),
               child: Icon(
                 Icons.location_on_outlined,
@@ -483,15 +483,12 @@ class appBarWidget extends StatelessWidget {
                 size: 13,
               ),
             ),
-            const Text(
+            Text(
               "Zihuanatneji,Gro",
               style: TextStyle(
                   color: darklBue, fontSize: 15, fontWeight: FontWeight.w700),
             ),
-            Transform.rotate(
-                angle: -3.14 / 2,
-                child: const Icon(Icons.navigate_before,
-                    color: Colors.grey, size: 16))
+            Icon(Icons.keyboard_arrow_down, color: Colors.grey, size: 16)
           ],
         ),
         Align(
