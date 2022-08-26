@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phone_test/pages/main_page/main_page.dart';
+import 'package:phone_test/pages/phone_details_page/phone_datails_page.dart';
 import 'source/AppTheme/AppTheme.dart';
 
 void main() {
@@ -13,10 +14,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: getCustomThemeData(),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: const MainPage(),
-    );
+        title: 'Flutter Demo',
+        theme: getCustomThemeData(),
+        // home: const MainPage(),
+        home: const PhoneDetailsPage());
   }
 }
