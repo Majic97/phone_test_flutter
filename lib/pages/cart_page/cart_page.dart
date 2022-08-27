@@ -27,9 +27,12 @@ class _CartPageState extends State<CartPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 50),
+              padding: const EdgeInsets.only(bottom: 30, top: 25, left: 25),
               alignment: Alignment.centerLeft,
-              child: const Text("My cart"),
+              child: const Text(
+                "My Cart",
+                style: TextStyle(fontSize: 35, fontWeight: FontWeight.w800),
+              ),
             ),
             Expanded(
               child: Container(
@@ -45,12 +48,12 @@ class _CartPageState extends State<CartPage> {
                     BlocCartPageProductListWidget(),
                     Divider(
                       color: Colors.white,
-                      thickness: 1,
+                      thickness: 0.4,
                     ),
                     BlocTotalDeliveryWidget(),
                     Divider(
                       color: Colors.white,
-                      thickness: 1,
+                      thickness: 0.2,
                     ),
                     CartPageButtonWidget(),
                   ],
@@ -82,7 +85,7 @@ class BlocTotalDeliveryWidget extends StatelessWidget {
       return Container(
         height: 80,
         padding:
-            const EdgeInsets.only(left: 55, right: 35, top: 15, bottom: 26),
+            const EdgeInsets.only(left: 40, right: 35, top: 15, bottom: 20),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Column(
@@ -106,12 +109,18 @@ class BlocTotalDeliveryWidget extends StatelessWidget {
                         : "\$" +
                             getPriceFromDouble(
                                 (state as CartPageTotalPriceState).total),
-                    style: const TextStyle(color: Colors.white, fontSize: 16)),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600)),
                 Text(
                     state is CartPageInitState
                         ? ""
                         : (state as CartPageTotalPriceState).delivery,
-                    style: const TextStyle(color: Colors.white, fontSize: 16))
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600))
               ])
         ]),
       );
@@ -161,7 +170,7 @@ class CartPageDevicesListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        padding: const EdgeInsets.only(left: 27, right: 27),
+        padding: const EdgeInsets.only(left: 27, right: 20),
         shrinkWrap: true,
         itemCount: data.length,
         itemBuilder: (context, index) => Padding(
@@ -189,7 +198,8 @@ class CartPageDevicesListWidget extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 6, horizontal: 5),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,7 +216,9 @@ class CartPageDevicesListWidget extends StatelessWidget {
                           ),
                           Text("\$" + getPriceFromDouble(data[index].price),
                               style: const TextStyle(
-                                  fontSize: 20, color: customOrange))
+                                  fontSize: 20,
+                                  color: customOrange,
+                                  fontWeight: FontWeight.w600))
                         ],
                       ),
                     ),
@@ -218,7 +230,13 @@ class CartPageDevicesListWidget extends StatelessWidget {
                       data[index].id,
                     ),
                     GestureDetector(
-                      child: Icon(Icons.remove),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        child: Icon(
+                          Icons.delete_outline_rounded,
+                          color: Color(0xFF36364D),
+                        ),
+                      ),
                       onTap: () {
                         context
                             .read<CartPageCubit>()
@@ -251,39 +269,50 @@ class _ChangeDeviceCountWidgetState extends State<ChangeDeviceCountWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey,
-      height: 68,
-      child: Column(children: [
-        GestureDetector(
-          child: const Icon(
-            Icons.remove,
-            color: Colors.white,
-          ),
-          onTap: () {
-            setState(() {
-              context.read<CartPageCubit>().reduceDeviceCount(widget.id);
-              if (currentDeviceCount > 1) currentDeviceCount--;
-            });
-          },
-        ),
-        Text(
-          currentDeviceCount.toString(),
-          style: TextStyle(color: Colors.white),
-        ),
-        GestureDetector(
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          onTap: () {
-            setState(() {
-              context.read<CartPageCubit>().increaseDeviceCount(widget.id);
-              currentDeviceCount++;
-            });
-          },
-        )
-      ]),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      child: Container(
+        decoration: const BoxDecoration(
+            color: Color(0xFF36364D),
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        height: 68,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                child: const Icon(
+                  Icons.remove,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                onTap: () {
+                  setState(() {
+                    context.read<CartPageCubit>().reduceDeviceCount(widget.id);
+                    if (currentDeviceCount > 1) currentDeviceCount--;
+                  });
+                },
+              ),
+              Text(
+                currentDeviceCount.toString(),
+                style: const TextStyle(color: Colors.white),
+              ),
+              GestureDetector(
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                onTap: () {
+                  setState(() {
+                    context
+                        .read<CartPageCubit>()
+                        .increaseDeviceCount(widget.id);
+                    currentDeviceCount++;
+                  });
+                },
+              )
+            ]),
+      ),
     );
   }
 }
