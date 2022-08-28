@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:phone_test/pages/main_page/main_page_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -62,7 +63,8 @@ List<HotSale> getHotSalesFromJson(Map<String, dynamic> mainPageUriBody) {
   for (Map<String, dynamic> item in hotSalesList) {
     late Image _image;
     try {
-      _image = Image.network(item['picture']);
+      _image = Image.network(item['picture'],
+          errorBuilder: (context, error, stackTrace) => throw Exception());
 
       hotSales.add(HotSale(
           int.parse(item['id'].toString()),
@@ -88,7 +90,8 @@ List<BestSeller> getBestSellersFromJson(Map<String, dynamic> mainPageUriBody) {
   for (Map<String, dynamic> item in bestSellersList) {
     late Image _image;
     try {
-      _image = Image.network(item['picture']);
+      _image = Image.network(item['picture'],
+          errorBuilder: (context, url, error) => FlutterLogo());
 
       bestSellers.add(BestSeller(
           int.parse(item['id'].toString()),

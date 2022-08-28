@@ -19,11 +19,8 @@ class _SplashPageState extends State<SplashPage> {
 
     Timer(
         const Duration(seconds: 3),
-        () => Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const MainPage(),
-            )));
+        () =>
+            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false));
   }
 
   @override

@@ -41,6 +41,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               const SliverAppBar(
+                automaticallyImplyLeading: false,
                 backgroundColor: backgroundColor,
                 flexibleSpace: SearchWidgetAndQRButtonWidget(),
                 pinned: true,
@@ -49,6 +50,7 @@ class _MainPageState extends State<MainPage> {
                 child: getBlocOfHotSalesWidget(),
               ),
               const SliverAppBar(
+                automaticallyImplyLeading: false,
                 flexibleSpace: getBestSellersTitleWidget(),
                 pinned: true,
               ),
@@ -71,6 +73,18 @@ class _MainPageState extends State<MainPage> {
           current is MainPageWithDataState) return true;
       return false;
     }, builder: (context, state) {
+      if (state is MainPageNonConnectionState) {
+        return SliverToBoxAdapter(
+            child: Container(
+                padding: const EdgeInsets.all(5),
+                child: const Center(
+                    child: Icon(
+                  Icons.signal_wifi_bad_rounded,
+                  size: 30,
+                  color: Colors.black,
+                ))));
+      }
+
       if (state is MainPageWithDataState) {
         return SliverGrid(
             delegate: SliverChildBuilderDelegate((context, index) {
@@ -643,7 +657,7 @@ class _DropdownButtonTemplateWidgetState
       {required this.title, required this.items}) {
     if (UserAppData.appData.filterProperties[title] == null) {
       currentValue = items.first;
-      UserAppData.appData.filterProperties[title] = title;
+      UserAppData.appData.filterProperties[title] = currentValue;
     } else {
       currentValue = UserAppData.appData.filterProperties[title]!;
     }
@@ -689,9 +703,6 @@ class _DropdownButtonTemplateWidgetState
                   UserAppData.appData.filterProperties
                       .update(title, (value) => newValue!);
                   currentValue = newValue!;
-                  print(currentValue);
-                  print(newValue);
-                  print(currentValue);
                 });
               }),
         ),

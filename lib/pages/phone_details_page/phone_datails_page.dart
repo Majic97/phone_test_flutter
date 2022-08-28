@@ -77,7 +77,7 @@ class _PhoneDetailsPageState extends State<PhoneDetailsPage> {
 
       yield PhoneDetailsMainWidget(_state);
     } catch (e) {
-      yield Center(
+      yield const Center(
         child: Icon(
           Icons.signal_wifi_bad_outlined,
           color: Colors.black,
