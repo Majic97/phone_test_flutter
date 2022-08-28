@@ -67,7 +67,7 @@ class _MainPageState extends State<MainPage> {
         buildWhen: (previous, current) {
       if (current is MainPageInitState ||
           current is MainPageInProgressState ||
-          current is MainPageNoConnectionState ||
+          current is MainPageNonConnectionState ||
           current is MainPageWithDataState) return true;
       return false;
     }, builder: (context, state) {
@@ -96,7 +96,7 @@ class _MainPageState extends State<MainPage> {
       buildWhen: (previous, current) {
         if (current is MainPageInitState ||
             current is MainPageInProgressState ||
-            current is MainPageNoConnectionState ||
+            current is MainPageNonConnectionState ||
             current is MainPageWithDataState) return true;
         return false;
       },
@@ -109,68 +109,73 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Container getBestSellersGridItemWidget(
+  GestureDetector getBestSellersGridItemWidget(
       List<BestSeller> _bestSellers, int index) {
-    return Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(10))),
-        child: Column(children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  image: DecorationImage(
-                      image: _bestSellers[index].image.image,
-                      fit: BoxFit.fill)),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: LikeButtonOfBestSellerItemWidget(
-                  index: index,
+    return GestureDetector(
+      child: Container(
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: Column(children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    image: DecorationImage(
+                        image: _bestSellers[index].image.image,
+                        fit: BoxFit.fill)),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: LikeButtonOfBestSellerItemWidget(
+                    index: index,
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 21, bottom: 4),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "\$" +
-                        getPriceFromDouble(_bestSellers[index].discountPrice),
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w800),
+            Padding(
+              padding: const EdgeInsets.only(left: 21, bottom: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(
+                      "\$" +
+                          getPriceFromDouble(_bestSellers[index].discountPrice),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w800),
+                    ),
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 6),
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "\$" +
-                        getPriceFromDouble(
-                            _bestSellers[index].priceWithoutDiscount),
-                    style: TextStyle(
-                        color: Colors.grey.shade500,
-                        decoration: TextDecoration.lineThrough,
-                        fontSize: 10),
+                  Container(
+                    padding: EdgeInsets.only(left: 6),
+                    alignment: Alignment.bottomLeft,
+                    child: Text(
+                      "\$" +
+                          getPriceFromDouble(
+                              _bestSellers[index].priceWithoutDiscount),
+                      style: TextStyle(
+                          color: Colors.grey.shade500,
+                          decoration: TextDecoration.lineThrough,
+                          fontSize: 10),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 21, top: 1, bottom: 15),
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              _bestSellers[index].title,
-              style: const TextStyle(fontSize: 12, color: darklBue),
+            Container(
+              padding: const EdgeInsets.only(left: 21, top: 1, bottom: 15),
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                _bestSellers[index].title,
+                style: const TextStyle(fontSize: 12, color: darklBue),
+              ),
             ),
-          ),
-        ]));
+          ])),
+      onTap: () {
+        Navigator.of(context).pushNamed('/details');
+      },
+    );
   }
 
   Padding getHotSalesWidget(List<HotSale> _hotSales) {
@@ -275,7 +280,9 @@ class _MainPageState extends State<MainPage> {
             style: TextStyle(
                 fontSize: 11, color: darklBue, fontWeight: FontWeight.w900),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed('/details');
+          },
         ),
       );
     } else {
@@ -729,10 +736,15 @@ class bottomAppBarWidget extends StatelessWidget {
                   )
                 ],
               ),
-              const Icon(
-                Icons.shopping_bag_outlined,
-                color: Colors.white,
-                size: 19,
+              GestureDetector(
+                child: const Icon(
+                  Icons.shopping_bag_outlined,
+                  color: Colors.white,
+                  size: 19,
+                ),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/cart');
+                },
               ),
               const Icon(
                 Iconsax.heart,

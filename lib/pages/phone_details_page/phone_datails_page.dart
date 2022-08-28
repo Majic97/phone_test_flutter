@@ -23,6 +23,7 @@ class _PhoneDetailsPageState extends State<PhoneDetailsPage> {
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           centerTitle: true,
           title: const AppBarTitleWidget(),
         ),
@@ -76,7 +77,13 @@ class _PhoneDetailsPageState extends State<PhoneDetailsPage> {
 
       yield PhoneDetailsMainWidget(_state);
     } catch (e) {
-      yield Text(e.toString());
+      yield Center(
+        child: Icon(
+          Icons.signal_wifi_bad_outlined,
+          color: Colors.black,
+          size: 30,
+        ),
+      );
     }
   }
 }
@@ -96,26 +103,37 @@ class AppBarTitleWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                decoration: const BoxDecoration(
-                    color: darklBue,
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                height: 30,
-                width: 30,
-                child: const Center(child: Icon(Icons.navigate_before)),
+              GestureDetector(
+                child: Container(
+                  decoration: const BoxDecoration(
+                      color: darklBue,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  height: 30,
+                  width: 30,
+                  child: const Center(child: Icon(Icons.navigate_before)),
+                ),
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/', (route) => false);
+                },
               ),
-              Container(
-                decoration: const BoxDecoration(
-                    color: customOrange,
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                height: 30,
-                width: 30,
-                child: const Center(
-                  child: Icon(
-                    Icons.shopping_bag_outlined,
-                    size: 16,
+              GestureDetector(
+                child: Container(
+                  decoration: const BoxDecoration(
+                      color: customOrange,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  height: 30,
+                  width: 30,
+                  child: const Center(
+                    child: Icon(
+                      Icons.shopping_bag_outlined,
+                      size: 16,
+                    ),
                   ),
                 ),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/cart');
+                },
               )
             ],
           ),

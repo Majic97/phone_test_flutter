@@ -21,6 +21,7 @@ class _CartPageState extends State<CartPage> {
       create: (_) => CartPageCubit(),
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const AppBarWidget(),
         ),
         body: Column(
@@ -152,8 +153,14 @@ class BlocCartPageProductListWidget extends StatelessWidget {
         );
       }
       if (state is CartPageNonConnectionState) {
-        return const Center(
-          child: Icon(Icons.signal_wifi_off_outlined),
+        return Expanded(
+          child: Container(
+            alignment: Alignment.center,
+            child: const Icon(
+              Icons.signal_wifi_off_outlined,
+              color: Colors.white,
+            ),
+          ),
         );
       }
       return CartPageDevicesListWidget((state as CartPageCartDataState).data);
@@ -355,13 +362,18 @@ class AppBarWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            decoration: const BoxDecoration(
-                color: darklBue,
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            height: 30,
-            width: 30,
-            child: const Center(child: Icon(Icons.navigate_before)),
+          GestureDetector(
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: darklBue,
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              height: 30,
+              width: 30,
+              child: const Center(child: Icon(Icons.navigate_before)),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+            },
           ),
           Row(
             children: [

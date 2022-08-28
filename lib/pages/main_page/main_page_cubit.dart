@@ -43,7 +43,7 @@ class MainPageCubit extends Cubit<MainPageState> {
         throw Exception();
       }
     } catch (e) {
-      emit(MainPageNoConnectionState());
+      emit(MainPageNonConnectionState());
       return;
     }
   }

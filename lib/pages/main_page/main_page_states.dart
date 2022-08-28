@@ -8,7 +8,7 @@ class MainPageInitState extends MainPageState {}
 class MainPageInProgressState extends MainPageState {}
 
 // состояние для ситуации, когда отсутсвует интернет соединение
-class MainPageNoConnectionState extends MainPageState {}
+class MainPageNonConnectionState extends MainPageState {}
 
 // состояние с уже загруженными данными
 class MainPageWithDataState extends MainPageState {
