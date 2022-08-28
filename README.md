@@ -1,2 +1,3 @@
-# test_mob_app
-Test mobile project for company
+<h1 align="center">Hi there, I'm Majid</a> 
+<img src="https://github.com/blackcater/blackcater/raw/main/images/Hi.gif" height="32"/></h1>
+<h3 align="center">Basicly spacecraft engneer but now software developer =)</h3>
