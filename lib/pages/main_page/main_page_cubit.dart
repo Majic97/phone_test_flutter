@@ -63,8 +63,13 @@ List<HotSale> getHotSalesFromJson(Map<String, dynamic> mainPageUriBody) {
   for (Map<String, dynamic> item in hotSalesList) {
     late Image _image;
     try {
-      _image = Image.network(item['picture'],
-          errorBuilder: (context, error, stackTrace) => throw Exception());
+      _image = Image.network(
+        item['picture'],
+        errorBuilder: (context, error, stackTrace) {
+          print("------------------------------------------------------------");
+          return Text('Your error widget... $error');
+        },
+      );
 
       hotSales.add(HotSale(
           int.parse(item['id'].toString()),
@@ -90,8 +95,13 @@ List<BestSeller> getBestSellersFromJson(Map<String, dynamic> mainPageUriBody) {
   for (Map<String, dynamic> item in bestSellersList) {
     late Image _image;
     try {
-      _image = Image.network(item['picture'],
-          errorBuilder: (context, url, error) => FlutterLogo());
+      _image = Image.network(
+        item['picture'],
+        errorBuilder: (context, error, stackTrace) {
+          print("------------------------------------------------------------");
+          return Text('Your error widget... $error');
+        },
+      );
 
       bestSellers.add(BestSeller(
           int.parse(item['id'].toString()),
